@@ -14,6 +14,7 @@ const accordionHistoric = document.querySelector("#accordionHistoric");
 //--> Eventos
 converterButtonElement.addEventListener("click", function () {
   if(!!inputValueElement.checkValidity()) convertBases();
+  return;
 });
 entryBaseElement.addEventListener("change", function () {
   validateConvertBaseToBase()
@@ -52,23 +53,29 @@ function convertFromDecimalToBase(valor, base) {
   let dividendo = Math.floor(valor);
   let resultado = [];
   let fatorA = valor % 1;
-  let produto;
+  let produto, passos = [];
   //Realiza as operações para os números antes da virgula
+  /* registra passo */ passos.push("Obtem a parte inteira: " + dividendo);
   while (dividendo >= base) {
     resultado.push(convertLetraNumero(dividendo % base));
+    /* registra passo */ passos.push("Realizando a divisão: " + dividendo + "/" + base + " = " + Math.floor(dividendo / base) + ", com resto: " + convertLetraNumero(dividendo % base));
     dividendo = Math.floor(dividendo / base);
   }
   resultado.push(convertLetraNumero(dividendo));
   resultado = resultado.reverse();
   //Realiza as operações para os números após da virgula
+  /* registra passo */ passos.push("Obtem a parte decimal: " + fatorA);
   if (fatorA) resultado.push(".");
   while (fatorA != 0) {
     produto = fatorA * base;
+    /* registra passo */ passos.push("Realizando o produto da parte decimal pela base: " + fatorA + " * " + base + " = " + produto);
+    /* registra passo */ passos.push("Guardamos a parte inteira como resultado: " + convertLetraNumero(Math.floor(produto)));
     resultado.push(convertLetraNumero(Math.floor(produto)));
     fatorA = produto % 1;
   }
   //Retorna no formato de texto
-  return resultado.join("");
+  console.log(passos);
+  return [resultado.join(""), passos];
 }
 
 //--> Conversão a partir de uma Base Qualquer para Base Decimal por meio de Polinômios
@@ -122,7 +129,7 @@ function convertFromBaseToDecimal(v, b) {
 function convertBases() {
   let result, caminho;
   if (entryBaseElement.value == 10) {
-    result = convertFromDecimalToBase(inputValueElement.value, outletBaseElement.value);
+    result = convertFromDecimalToBase(inputValueElement.value, outletBaseElement.value)[0];
     caminho =
       '<a class="text-success text-decoration-none font-weight-bold">Decimal</a> <a class="text-dark text-decoration-none font-weight-bold">-></a> ' +
       '<a class="text-danger text-decoration-none font-weight-bold">' +
@@ -133,7 +140,7 @@ function convertBases() {
       result = convertFromDecimalToBase(
         convertFromBaseToDecimal(inputValueElement.value, entryBaseElement.value),
         outletBaseElement.value
-      );
+      )[0];
       caminho =
         '<a class="text-success text-decoration-none font-weight-bold">' +
         convertNomeBase(entryBaseElement.value) +
@@ -153,6 +160,7 @@ function convertBases() {
         "</a>";
     }
   }
+  //console.log(result);
   outputValueElement.value = result;
   historicAddItem(entryBaseElement.value, outletBaseElement.value, inputValueElement.value, result, caminho);
 }
@@ -214,3 +222,6 @@ function historicAddItem(
     "</div>";
   accordionHistoric.innerHTML = contentHTML + accordionHistoric.innerHTML;
 }
+
+
+////////////////////

@@ -22,7 +22,6 @@ entryBaseElement.addEventListener("change", function () {
     inputValueElement.value,
     entryBaseElement.value
   );
-  //console.log(entryBaseElement.value);
   validateConvertBaseToBase();
 });
 
@@ -121,7 +120,6 @@ function convertFromDecimalToBase(valor, base) {
         resultado.join("")
     );
   //Retorna no formato de texto
-  console.log(passos);
   return [resultado.join(""), passos];
 }
 
@@ -172,8 +170,6 @@ function convertFromBaseToDecimal(v, b) {
       valor + " * " + base + "^" + expoente + " = " + resultado
     );
     total += resultado;
-    //valor = parseInt(left[i]);
-    //console.log("Número " + left[i] + " corresponde a: " + valor + " * " + base + " elevado a " + expoente + " = " + resultado);
   }
   /* registra passo */ passos.push("Somando a parte inteira: " + total);
   //Procedimentos com os números após o "."
@@ -207,14 +203,12 @@ function convertFromBaseToDecimal(v, b) {
         valor = 15;
         /* registra passo */ passos.push("'F' equivale a '15'");
       }
-      //valor = parseInt(left[i]);
       resultado = valor * Math.pow(base, expoente * -1);
       /* registra passo */ passos.push(
         valor + " * " + base + "^" + expoente * -1 + " = " + resultado
       );
       total += resultado;
       passos.push("Somando tudo: " + total);
-      //console.log("Número " + right[i] + " corresponde a: " + valor + " * " + base + " elevado a " + expoente + " = " + resultado);
     }
   }
   return [total, passos];
@@ -243,7 +237,6 @@ function convertBases() {
         inputValueElement.value,
         entryBaseElement.value
       );
-      //console.log(subConvertion[1]);
       passos.push(convertNomeBase(entryBaseElement.value) + " -> Decimal");
       passos = passos.concat(subConvertion[1]);
       passos.push("Decimal -> " + convertNomeBase(outletBaseElement.value));
@@ -273,7 +266,6 @@ function convertBases() {
         "</a><p></p>";
     }
   }
-  //console.log(result);
   result = retorno[0];
   passos = passos.concat(retorno[1]);
   outputValueElement.value = result;
@@ -372,7 +364,6 @@ function fitler(string, base) {
     ) {
       string[i] = " ";
     }
-    //console.log(string[i]);
   }
   string = string.join("").trim()
   return (string == '.' ? 0 : string);
